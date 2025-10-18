@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Autoridades - Sistema Ciudadano</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f6f9;
+      color: #333;
+    }
+
+    /* === Header === */
+    .site-header {
+      background: #2c3e50;
+      color: #fff;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .site-header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-right: 1rem;
+    }
+    nav a.active {
+      text-decoration: underline;
+      font-weight: bold;
+    }
+    .logout-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .logout-btn:hover {
+      background: #c0392b;
+    }
+
+    /* === Contenido Principal === */
+    .autoridad-container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    .bandeja-section,
+    .indicadores-section {
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .bandeja-section h2,
+    .indicadores-section h2 {
+      color: #0056b3;
+      margin-top: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #0056b3;
+      color: white;
+    }
+
+    button.estado-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 5px 8px;
+      margin: 2px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    button.estado-btn:hover {
+      background: #0056b3;
+    }
+
+    .indicadores-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .indicador-card {
+      background: #f4f7fa;
+      text-align: center;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .indicador-card h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .indicador-card p {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin: 5px 0 0;
+      color: #0056b3;
+    }
+
+    footer {
+      background: #2c3e50;
+      color: #fff;
+      text-align: center;
+      padding: 0.7rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <h1>Panel de Autoridades 🏛️</h1>
+    <nav>
+      <a href="panel-autoridad.html" class="active">Bandeja de Reclamos</a>
+      <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+    </nav>
+  </header>
+
+  <main class="autoridad-container">
+
+    <!-- Bandeja de entrada -->
+    <section class="bandeja-section">
+      <h2>📥 Bandeja de Reclamos Ciudadanos</h2>
+      <table id="tablaAutoridad">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Prioridad</th>
+            <th>Descripción</th>
+            <th>Usuario</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Se llena dinámicamente -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Indicadores -->
+    <section class="indicadores-section">
+      <h2>📊 Indicadores de Gestión</h2>
+      <div class="indicadores-grid">
+        <div class="indicador-card">
+          <h3>Total Reclamos</h3>
+          <p id="totalReclamos">0</p>
+        </div>
+        <div class="indicador-card">
+          <h3>En Proceso</h3>
+          <p id="enProceso">0</p>
+        </div>
+        <div class="indicador-card">
+          <h3>Resueltos</h3>
+          <p id="resueltos">0</p>
+        </div>
+        <div class="indicador-card">
+          <h3>Pendientes</h3>
+          <p id="pendientes">0</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2025 Municipalidad de Guadalupe — Sistema Ciudadano</p>
+  </footer>
+
+  <script>
+    // ==========================
+    // 🔐 Verificar sesión activa
+    // ==========================
+    const currentUser = JSON.parse(localStorage.getItem('loggedUser'));
+    if (!currentUser || currentUser.rol !== 'autoridad') {
+      window.location.href = 'login.html'; // Redirige si no es autoridad
+    }
+
+    // ==========================
+    // Elementos DOM
+    // ==========================
+    const tablaBody = document.querySelector('#tablaAutoridad tbody');
+    const totalReclamosEl = document.getElementById('totalReclamos');
+    const enProcesoEl = document.getElementById('enProceso');
+    const resueltosEl = document.getElementById('resueltos');
+    const pendientesEl = document.getElementById('pendientes');
+
+    // ==========================
+    // Datos (desde localStorage)
+    // ==========================
+    let reclamos = JSON.parse(localStorage.getItem('reclamos')) || [];
+
+    // ==========================
+    // Cambiar estado del reclamo
+    // ==========================
+    function cambiarEstado(id) {
+      const index = reclamos.findIndex(r => r.id === id);
+      if (index !== -1) {
+        const estadoActual = reclamos[index].estado;
+        let nuevoEstado = estadoActual;
+
+        if (estadoActual === 'Recibido') nuevoEstado = 'En proceso';
+        else if (estadoActual === 'En proceso') nuevoEstado = 'Resuelto';
+        else if (estadoActual === 'Resuelto') nuevoEstado = 'Cerrado';
+
+        reclamos[index].estado = nuevoEstado;
+        localStorage.setItem('reclamos', JSON.stringify(reclamos));
+        renderTabla();
+        actualizarIndicadores();
+      }
+    }
+
+    // ==========================
+    // Renderizar tabla
+    // ==========================
+    function renderTabla() {
+      tablaBody.innerHTML = '';
+      reclamos.forEach(r => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${r.tipo}</td>
+          <td>${r.prioridad || '-'}</td>
+          <td>${r.descripcion}</td>
+          <td>${r.user}</td>
+          <td>${r.estado}</td>
+          <td>
+            ${r.estado !== 'Cerrado' ? 
+              `<button class="estado-btn" onclick="cambiarEstado(${r.id})">Cambiar estado</button>` : 
+              `<span>✅ Cerrado</span>`}
+          </td>
+        `;
+        tablaBody.appendChild(row);
+      });
+    }
+
+    // ==========================
+    // Indicadores
+    // ==========================
+    function actualizarIndicadores() {
+      totalReclamosEl.textContent = reclamos.length;
+      enProcesoEl.textContent = reclamos.filter(r => r.estado === 'En proceso').length;
+      resueltosEl.textContent = reclamos.filter(r => r.estado === 'Resuelto').length;
+      pendientesEl.textContent = reclamos.filter(r => r.estado === 'Recibido').length;
+    }
+
+    // ==========================
+    // Logout
+    // ==========================
+    function logout() {
+      localStorage.removeItem('loggedUser');
+      window.location.href = 'login.html';
+    }
+
+    // ==========================
+    // Inicialización
+    // ==========================
+    renderTabla();
+    actualizarIndicadores();
+
+    // ==========================
+    // 🔗 CONEXIÓN CON PANEL ADMIN
+    // ==========================
+
+    // Si no existen reclamos, cargamos algunos de ejemplo
+    if (!reclamos || reclamos.length === 0) {
+      reclamos = [
+        { id: 1, tipo: "Alumbrado Público", prioridad: "Alta", descripcion: "Poste sin luz en Av. Central", user: "Juan Pérez", estado: "Recibido" },
+        { id: 2, tipo: "Limpieza", prioridad: "Media", descripcion: "Acumulación de basura en el parque", user: "Ana Torres", estado: "En proceso" },
+        { id: 3, tipo: "Bacheo", prioridad: "Alta", descripcion: "Hueco peligroso frente al colegio", user: "Luis Gómez", estado: "Resuelto" }
+      ];
+      localStorage.setItem('reclamos', JSON.stringify(reclamos));
+    }
+
+    // 🔄 Escuchar cambios desde localStorage (sin recargar la página)
+    window.addEventListener("storage", (event) => {
+      if (event.key === "reclamos") {
+        reclamos = JSON.parse(event.newValue) || [];
+        renderTabla();
+        actualizarIndicadores();
+      }
+    });
+
+    // 🔁 Sincronizar cada cierto tiempo (por si ambos paneles están abiertos)
+    setInterval(() => {
+      const nuevos = JSON.parse(localStorage.getItem('reclamos')) || [];
+      if (JSON.stringify(nuevos) !== JSON.stringify(reclamos)) {
+        reclamos = nuevos;
+        renderTabla();
+        actualizarIndicadores();
+      }
+    }, 3000);
+  </script>
+  
+</body>
+</html>

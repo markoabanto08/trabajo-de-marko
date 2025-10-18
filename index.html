@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Municipalidad Distrital de Guadalupe</title>
+  <link rel="icon" href="img/megafono.png">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #fff;
+      color: #333;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      background: linear-gradient(90deg, #7b1113, #b71c1c);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    nav ul li a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -3px;
+      left: 0;
+      background: #ffd700;
+      transition: width 0.3s;
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      height: 95vh;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(123,17,19,0.8)),
+        url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1400&q=80") 
+        center/cover fixed no-repeat;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 20px;
+      animation: fadeIn 2s ease;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      text-shadow: 3px 3px 10px rgba(0,0,0,0.6);
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      max-width: 850px;
+      margin-bottom: 35px;
+      color: #f8f8f8;
+    }
+
+    .hero a {
+      background: #ffd700;
+      color: #7b1113;
+      padding: 15px 40px;
+      border-radius: 50px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+
+    .hero a:hover {
+      background: #fff;
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    /* ===== SECCIÓN DE DESTACADOS ===== */
+    .info {
+      background: linear-gradient(180deg, #fff, #f6f6f6);
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .info h2 {
+      font-size: 2.2rem;
+      color: #7b1113;
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .info h2::after {
+      content: "";
+      position: absolute;
+      width: 60%;
+      height: 4px;
+      bottom: -10px;
+      left: 20%;
+      background: #ffd700;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      width: 300px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .card img {
+      width: 80px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      color: #7b1113;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #444;
+      font-size: 1rem;
+    }
+
+    /* ===== FRASE INSTITUCIONAL ===== */
+    .frase {
+      background: linear-gradient(90deg, #7b1113, #b71c1c);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .frase h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .frase p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== ANIMACIONES ===== */
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {font-size: 2.2rem;}
+      nav {flex-direction: column; gap: 10px;}
+      .card {width: 90%;}
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">🏛️ Municipalidad de Guadalupe</div>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="info.html">Servicios</a></li>
+      <li><a href="login.html">Acceder</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h1>Guadalupe Avanza Contigo</h1>
+    <p>Innovamos para servir mejor a nuestra comunidad. Participa, reporta y construyamos juntos una ciudad más moderna, limpia y conectada.</p>
+    <a href="info.html">Explorar el Sistema</a>
+  </section>
+
+  <section class="info">
+    <h2>¿Qué puedes hacer aquí?</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Reclamos">
+        <h3>Registrar Reclamos</h3>
+        <p>Envía tus reclamos o sugerencias desde cualquier dispositivo y recibe seguimiento inmediato.</p>
+      </div>
+
+      <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/846/846449.png" alt="Servicios">
+        <h3>Ver Servicios</h3>
+        <p>Conoce los servicios que ofrece tu municipalidad en limpieza, obras, seguridad y más.</p>
+      </div>
+
+      <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/744/744502.png" alt="Comunidad">
+        <h3>Participa</h3>
+        <p>Únete a las campañas y actividades que promueven el desarrollo y bienestar ciudadano.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="frase">
+    <h2>“Transparencia, innovación y compromiso con Guadalupe”</h2>
+    <p>Avanzamos juntos hacia un futuro más limpio, moderno y participativo.</p>
+  </section>
+
+  <footer>
+    © 2025 Municipalidad Distrital de Guadalupe — Desarrollo y Servicio para Todos
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración - Sistema de Reclamos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f6f8;
+      color: #333;
+    }
+
+    header.site-header {
+      background: #005baa;
+      color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      margin: 0;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 15px;
+      font-weight: bold;
+    }
+
+    nav a.active {
+      text-decoration: underline;
+    }
+
+    nav a:hover {
+      opacity: 0.8;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #005baa;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .card p {
+      font-size: 1.5rem;
+      margin: 5px 0 0;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background: #005baa;
+      color: white;
+    }
+
+    tr:hover {
+      background: #f1f1f1;
+    }
+
+    button.btn {
+      background: #005baa;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button.btn:hover {
+      background: #003f7d;
+    }
+
+    form#form-categoria {
+      display: flex;
+      margin-top: 10px;
+      gap: 10px;
+    }
+
+    #nueva-categoria {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    ul#lista-categorias {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+    }
+
+    ul#lista-categorias li {
+      background: white;
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    #notification-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1000;
+    }
+
+    .notification {
+      background: #333;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 8px;
+      min-width: 200px;
+      opacity: 0.95;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #005baa;
+      color: #fff;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <h1>Panel de Administración</h1>
+    <nav>
+      <a href="panel-admin.html" class="active">Dashboard</a>
+      <a href="panel-autoridad.html">Autoridad</a> <!-- 🔗 Nuevo acceso -->
+      <a href="#" id="logout-btn">Cerrar Sesión</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 📊 Reportes -->
+    <section class="reportes">
+      <h2>📈 Reportes y Estadísticas</h2>
+      <div class="cards">
+        <div class="card"><h3>Total de Reclamos</h3><p id="total-reclamos">0</p></div>
+        <div class="card"><h3>Pendientes</h3><p id="reclamos-pendientes">0</p></div>
+        <div class="card"><h3>Resueltos</h3><p id="reclamos-resueltos">0</p></div>
+      </div>
+      <canvas id="grafico"></canvas>
+    </section>
+
+    <!-- 👤 Usuarios -->
+    <section class="usuarios">
+      <h2>👤 Gestión de Usuarios</h2>
+      <table id="tabla-usuarios">
+        <thead>
+          <tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Acciones</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button id="undo-usuario-btn" class="btn" style="margin-top:10px; display:none;">↩️ Deshacer</button>
+    </section>
+
+    <!-- 📝 Categorías -->
+    <section class="categorias">
+      <h2>📝 Configuración de Categorías</h2>
+      <form id="form-categoria">
+        <input type="text" id="nueva-categoria" placeholder="Nueva categoría..." required>
+        <button type="submit" class="btn">Agregar</button>
+      </form>
+      <ul id="lista-categorias"></ul>
+      <button id="undo-categoria-btn" class="btn" style="margin-top:10px; display:none;">↩️ Deshacer</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Municipalidad de Guadalupe — Sistema Ciudadano</p>
+  </footer>
+
+  <div id="notification-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    // ================================
+    // 🔗 Conexión con Autoridad
+    // ================================
+    let reclamos = JSON.parse(localStorage.getItem('reclamos')) || [
+      { id: 1, estado: "Pendiente" },
+      { id: 2, estado: "Pendiente" },
+      { id: 3, estado: "Resuelto" },
+      { id: 4, estado: "Pendiente" }
+    ];
+    localStorage.setItem('reclamos', JSON.stringify(reclamos)); // 🔄 sincronizar
+
+    const usuarios = [
+      { nombre: "Ana Torres", email: "ana@mail.com", rol: "Ciudadano" },
+      { nombre: "Luis Gómez", email: "luis@mail.com", rol: "Autoridad" },
+      { nombre: "Admin", email: "admin@mail.com", rol: "Administrador" }
+    ];
+
+    const categorias = ["Baches", "Alumbrado", "Limpieza"];
+    let grafico; 
+
+    // ================================
+    // 📊 Cargar estadísticas
+    // ================================
+    function cargarEstadisticas() {
+      const total = reclamos.length;
+      const pendientes = reclamos.filter(r => r.estado === "Pendiente" || r.estado === "Recibido").length;
+      const resueltos = reclamos.filter(r => r.estado === "Resuelto" || r.estado === "Cerrado").length;
+
+      document.getElementById("total-reclamos").textContent = total;
+      document.getElementById("reclamos-pendientes").textContent = pendientes;
+      document.getElementById("reclamos-resueltos").textContent = resueltos;
+
+      const ctx = document.getElementById("grafico").getContext("2d");
+      if (grafico) grafico.destroy();
+
+      grafico = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: ["Pendientes", "Resueltos"],
+          datasets: [{ data: [pendientes, resueltos], backgroundColor: ["#f39c12", "#2ecc71"] }]
+        },
+        options: { responsive: true, cutout: '60%', plugins: { legend: { position: 'bottom' } } }
+      });
+    }
+
+    // ================================
+    // 👤 Usuarios
+    // ================================
+    function cargarUsuarios() {
+      const tbody = document.querySelector("#tabla-usuarios tbody");
+      tbody.innerHTML = "";
+      usuarios.forEach(u => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${u.nombre}</td><td>${u.email}</td><td>${u.rol}</td>
+                        <td><button class="btn" onclick="eliminarUsuario('${u.email}')">Eliminar</button></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function eliminarUsuario(email) {
+      const index = usuarios.findIndex(u => u.email === email);
+      if (index >= 0) {
+        usuarios.splice(index, 1);
+        cargarUsuarios();
+        mostrarNotificacion("🗑️ Usuario eliminado");
+      }
+    }
+
+    // ================================
+    // 📝 Categorías
+    // ================================
+    function cargarCategorias() {
+      const ul = document.getElementById("lista-categorias");
+      ul.innerHTML = "";
+      categorias.forEach(c => {
+        const li = document.createElement("li");
+        li.innerHTML = `${c} <button class="btn" onclick="eliminarCategoria('${c}')">Eliminar</button>`;
+        ul.appendChild(li);
+      });
+    }
+
+    function eliminarCategoria(nombre) {
+      const index = categorias.indexOf(nombre);
+      if (index >= 0) {
+        categorias.splice(index, 1);
+        cargarCategorias();
+        mostrarNotificacion(`🗑️ Categoría "${nombre}" eliminada`);
+      }
+    }
+
+    document.getElementById("form-categoria").addEventListener("submit", e => {
+      e.preventDefault();
+      const input = document.getElementById("nueva-categoria");
+      const nueva = input.value.trim();
+      if (nueva && !categorias.includes(nueva)) {
+        categorias.push(nueva);
+        cargarCategorias();
+        input.value = "";
+        mostrarNotificacion("✅ Categoría agregada");
+      }
+    });
+
+    // ================================
+    // 🔔 Notificaciones
+    // ================================
+    function mostrarNotificacion(mensaje) {
+      const cont = document.getElementById("notification-container");
+      const div = document.createElement("div");
+      div.className = "notification";
+      div.textContent = mensaje;
+      cont.appendChild(div);
+      setTimeout(() => div.remove(), 3000);
+    }
+
+    // ================================
+    // 🚪 Logout
+    // ================================
+    document.getElementById("logout-btn").addEventListener("click", e => {
+      e.preventDefault();
+      mostrarNotificacion("👋 Sesión cerrada");
+      setTimeout(() => window.location.href = "index.html", 1500);
+    });
+
+    // ================================
+    // 🔄 Inicializar
+    // ================================
+    cargarEstadisticas();
+    cargarUsuarios();
+    cargarCategorias();
+  </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Restablecer Contraseña</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #ff0055, #ff8c00);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      overflow:hidden;
+    }
+    .volver {
+      position:absolute;
+      top:20px; left:20px;
+      background: rgba(255,255,255,0.2);
+      color:white;
+      padding:8px 15px;
+      border-radius:25px;
+      text-decoration:none;
+      font-weight:bold;
+      backdrop-filter: blur(6px);
+      transition: background 0.3s, transform 0.2s;
+    }
+    .volver:hover { background: rgba(255,255,255,0.4); transform:scale(1.05); }
+
+    .card {
+      background: rgba(0,0,0,0.7);
+      padding: 30px 35px;
+      border-radius: 20px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+      text-align:center;
+      width:100%;
+      max-width:420px;
+      color:white;
+    }
+
+    .card h1 { font-size:1.6rem; margin-bottom:10px; color:#ffd700; }
+    .card p { font-size:0.9rem; margin-bottom:20px; color:#ddd; }
+
+    .form-group { margin-bottom:15px; text-align:left; }
+    .form-group label { display:block; font-size:0.9rem; margin-bottom:5px; }
+    .form-group input {
+      width:100%; padding:10px; border:none; border-radius:8px;
+      background: rgba(255,255,255,0.1); color:#fff; font-size:1rem;
+      outline:none;
+    }
+
+    .btn {
+      width:100%; padding:12px; background:#ffd700; color:#000;
+      font-weight:bold; font-size:1rem; border:none; border-radius:25px;
+      cursor:pointer;
+    }
+    .btn:hover { background:#fff; }
+
+    .msg { text-align:center; margin-top:12px; display:none; font-size:0.95rem; }
+    .msg.error { color:#ff7b7b; }
+    .msg.success { color:#9ef09e; }
+    .links { margin-top:12px; font-size:0.9rem; }
+    .links a { color:#ffd700; text-decoration:none; }
+  </style>
+</head>
+<body>
+
+  <a href="login.html" class="volver">⬅️ Volver</a>
+
+  <div class="card">
+    <h1>Restablecer Contraseña</h1>
+    <p>Ingresa tu correo para cambiar la contraseña. Si no tienes cuenta, te daremos la opción de registrarte.</p>
+
+    <form id="resetForm">
+      <div class="form-group">
+        <label for="email">📧 Correo electrónico</label>
+        <input type="email" id="email" placeholder="usuario@correo.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="newpass">🔒 Nueva contraseña</label>
+        <input type="password" id="newpass" placeholder="Nueva contraseña" required>
+      </div>
+
+      <div class="form-group">
+        <label for="newpass2">🔒 Confirmar contraseña</label>
+        <input type="password" id="newpass2" placeholder="Confirmar contraseña" required>
+      </div>
+
+      <button type="submit" class="btn">Restablecer contraseña</button>
+    </form>
+
+    <div class="msg error" id="msg-error"></div>
+    <div class="msg success" id="msg-success"></div>
+
+    <div class="links">
+      <a href="registro.html">¿No tienes cuenta? Crear una</a>
+    </div>
+  </div>
+
+  <script>
+    const resetForm = document.getElementById('resetForm');
+    const msgError = document.getElementById('msg-error');
+    const msgSuccess = document.getElementById('msg-success');
+
+    function hideAll(){
+      msgError.style.display = 'none';
+      msgSuccess.style.display = 'none';
+    }
+
+    resetForm.addEventListener('submit', e => {
+      e.preventDefault();
+      hideAll();
+
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const newpass = document.getElementById('newpass').value;
+      const newpass2 = document.getElementById('newpass2').value;
+
+      if (!email || !newpass || !newpass2) {
+        msgError.textContent = "❌ Completa todos los campos.";
+        msgError.style.display = 'block';
+        return;
+      }
+
+      if (newpass.length < 6) {
+        msgError.textContent = "❌ La contraseña debe tener al menos 6 caracteres.";
+        msgError.style.display = 'block';
+        return;
+      }
+
+      if (newpass !== newpass2) {
+        msgError.textContent = "❌ Las contraseñas no coinciden.";
+        msgError.style.display = 'block';
+        return;
+      }
+
+      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      const index = usuarios.findIndex(u => (u.email || '').toLowerCase() === email);
+
+      if (index === -1) {
+        msgError.textContent = "❌ No existe una cuenta con ese correo. ¿Deseas registrarte?";
+        msgError.style.display = 'block';
+        return;
+      }
+
+      // Actualizar contraseña (en localStorage)
+      usuarios[index].password = newpass;
+      usuarios[index].fecha = new Date().toISOString();
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+      msgSuccess.textContent = "✅ Contraseña actualizada correctamente. Redirigiendo al login...";
+      msgSuccess.style.display = 'block';
+
+      setTimeout(() => window.location.href = 'login.html', 1400);
+    });
+  </script>
+</body>
+</html>
+

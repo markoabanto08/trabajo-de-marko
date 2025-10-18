@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bandeja de Notificaciones</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <h1>Bandeja de Notificaciones 📬</h1>
+  <nav>
+    <a href="dashboard_ciudadano.html">← Volver</a>
+  </nav>
+</header>
+
+<main class="bandeja-container">
+  <h2>Tus mensajes</h2>
+  <ul id="listaMensajes"></ul>
+</main>
+
+<footer>
+  <p>© 2025 Municipalidad de Guadalupe — Sistema Ciudadano</p>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  const user = JSON.parse(localStorage.getItem('loggedUser'));
+  const lista = document.getElementById('listaMensajes');
+
+  if (!user) {
+    window.location.href = 'login.html';
+  }
+
+  const bandejas = JSON.parse(localStorage.getItem('bandejasCorreo')) || {};
+  const mensajes = bandejas[user.username] || [];
+
+  if (mensajes.length === 0) {
+    lista.innerHTML = '<li>No tienes notificaciones aún 📭</li>';
+  } else {
+    mensajes.reverse().forEach(m => {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${m.asunto}</strong><br>${m.mensaje}<br><small>${m.fecha}</small>`;
+      lista.appendChild(li);
+    });
+  }
+</script>
+
+</body>
+</html>

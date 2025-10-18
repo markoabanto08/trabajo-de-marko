@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Información - Reclamos Guadalupe</title>
+  <link rel="icon" href="img/megafono.png">
+  <style>
+    body {font-family: "Poppins", sans-serif; margin: 0; background: #fff3e0;}
+    nav {
+      background: linear-gradient(90deg, #b71c1c, #f4511e);
+      color: white; display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 50px;
+    }
+    nav a {color: white; text-decoration: none; margin: 0 15px; font-weight: 500;}
+    nav a:hover {text-decoration: underline;}
+
+    .info {padding: 60px 10%; text-align: center;}
+    .info h2 {font-size: 2rem; color: #b71c1c; margin-bottom: 25px;}
+    .steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 30px;
+    }
+    .step {
+      background: #fff; border-radius: 10px; padding: 25px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.3s;
+    }
+    .step:hover {transform: translateY(-5px);}
+    .icon {font-size: 2rem; color: #f4511e; margin-bottom: 10px;}
+    .step h3 {color: #b71c1c; margin-bottom: 10px;}
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">📢 Reclamos Ciudadanos</div>
+    <div>
+      <a href="index.html">Inicio</a>
+      <a href="contacto.html">Contacto</a>
+    </div>
+  </nav>
+
+  <section class="info">
+    <h2>¿Cómo Funciona?</h2>
+    <div class="steps">
+
+      <div class="step">
+        <div class="icon">📝</div>
+        <h3>1. Regístrate</h3>
+        <p>Crea tu cuenta como ciudadano para empezar.</p>
+      </div>
+
+      <div class="step">
+        <div class="icon">📌</div>
+        <h3>2. Envía tu Reclamo</h3>
+        <p>Sube fotos, añade ubicación y describe el problema.</p>
+      </div>
+
+      <div class="step">
+        <div class="icon">🏛️</div>
+        <h3>3. Atención</h3>
+        <p>La municipalidad recibe y gestiona tu solicitud.</p>
+      </div>
+
+      <div class="step">
+        <div class="icon">📈</div>
+        <h3>4. Seguimiento</h3>
+        <p>Consulta el estado de tu reclamo en tiempo real.</p>
+      </div>
+
+      <div class="step">
+        <div class="icon">✅</div>
+        <h3>5. Solución</h3>
+        <p>Recibe notificaciones cuando tu reclamo se resuelva.</p>
+      </div>
+
+      <div class="step">
+        <div class="icon">💬</div>
+        <h3>6. Califica</h3>
+        <p>Evalúa la atención brindada por las autoridades.</p>
+      </div>
+
+      <!-- NUEVOS PASOS AÑADIDOS -->
+      <div class="step">
+        <div class="icon">🗺️</div>
+        <h3>7. Ubicación Geográfica</h3>
+        <p>Indica en el mapa dónde ocurre el problema para una atención más rápida.</p>
+      </div>
+
+      <div class="step">
+        <div class="icon">📷</div>
+        <h3>8. Evidencia Fotográfica</h3>
+        <p>Adjunta imágenes claras que ayuden a validar tu reporte.</p>
+      </div>
+
+      <div class="step">
+        <div class="icon">🤝</div>
+        <h3>9. Participación Vecinal</h3>
+        <p>Otros ciudadanos pueden apoyar o comentar tu reclamo para fortalecer la gestión.</p>
+      </div>
+
+      <div class="step">
+        <div class="icon">📊</div>
+        <h3>10. Reportes y Estadísticas</h3>
+        <p>Consulta gráficos sobre los tipos de reclamos más frecuentes y sus soluciones.</p>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

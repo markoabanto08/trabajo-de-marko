@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto - Plataforma de Reclamos</title>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    /* ==== ESTILOS GENERALES ==== */
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f7f9fb;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ==== NAVBAR ==== */
+    nav {
+      background-color: #0056b3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    nav .logo {
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ffd700;
+    }
+
+    /* ==== HEADER ==== */
+    header {
+      background: #eaf2ff;
+      color: #003366;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1rem;
+      color: #333;
+    }
+
+    /* ==== CONTACTO ==== */
+    .contact-container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 2rem;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .info-card {
+      flex: 1 1 250px;
+      background: #f0f4ff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+      background: #e0ebff;
+      transform: translateY(-5px);
+    }
+
+    .info-card i {
+      font-size: 2rem;
+      color: #0056b3;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-card h3 {
+      margin: 0.5rem 0;
+      font-size: 1.2rem;
+    }
+
+    iframe {
+      width: 100%;
+      height: 350px;
+      border: 0;
+      border-radius: 15px;
+      margin-top: 1.5rem;
+    }
+
+    /* ==== BOTÓN WHATSAPP ==== */
+    .whatsapp-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 25px;
+      right: 25px;
+      background-color: #25d366;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+    }
+
+    .whatsapp-float i {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">💬 Plataforma de Reclamos</div>
+    <ul>
+      <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+      <li><a href="informacion.html"><i class="fas fa-info-circle"></i> Información</a></li>
+      <li><a href="login.html"><i class="fas fa-sign-in-alt"></i> Iniciar sesión</a></li>
+      <li><a href="register.html"><i class="fas fa-user-plus"></i> Registrarse</a></li>
+      <li><a href="contacto.html"><i class="fas fa-envelope"></i> Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- ENCABEZADO -->
+  <header>
+    <h1>Contáctanos</h1>
+    <p>Estamos aquí para ayudarte, atender tus reclamos y recibir tus sugerencias.</p>
+  </header>
+
+  <!-- SECCIÓN DE CONTACTO -->
+  <div class="contact-container">
+    <div class="contact-info">
+      <div class="info-card">
+        <i class="fas fa-phone-alt"></i>
+        <h3>Teléfono</h3>
+        <p>+51 987 654 321</p>
+      </div>
+
+      <div class="info-card">
+        <i class="fas fa-envelope"></i>
+        <h3>Correo electrónico</h3>
+        <p>contacto@plataformareclamos.gob.pe</p>
+      </div>
+
+      <div class="info-card">
+        <i class="fas fa-map-marker-alt"></i>
+        <h3>Dirección</h3>
+        <p>Av. Los Incas 456 - Guadalupe, La Libertad</p>
+      </div>
+
+      <div class="info-card">
+        <i class="fas fa-clock"></i>
+        <h3>Horario de atención</h3>
+        <p>Lunes a Viernes: 8:00 a.m. - 5:00 p.m.</p>
+      </div>
+    </div>
+
+    <!-- MAPA -->
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.7548262703075!2d-77.03785268527985!3d-12.0463740456458!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c8d3d7e9f6b5%3A0xa2b9c8e4d30bdbf!2sPalacio%20Municipal%20de%20Lima!5e0!3m2!1ses!2spe!4v1675123456789"
+      allowfullscreen=""
+      loading="lazy">
+    </iframe>
+  </div>
+
+  <!-- BOTÓN WHATSAPP -->
+  <a href="https://wa.me/51987654321?text=Hola!%20Quisiera%20hacer%20una%20consulta%20sobre%20mi%20reclamo." class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar Reclamo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Registrar Reclamo</h2>
+  <form id="formReclamo">
+    <label>Título:</label>
+    <input type="text" name="titulo" required><br>
+
+    <label>Descripción:</label>
+    <textarea name="descripcion" required></textarea><br>
+
+    <label>Categoría:</label>
+    <select name="categoria">
+      <option value="Infraestructura">Infraestructura</option>
+      <option value="Limpieza">Limpieza</option>
+      <option value="Seguridad">Seguridad</option>
+      <option value="Otros">Otros</option>
+    </select><br>
+
+    <label>ID del usuario:</label>
+    <input type="number" name="usuario_id" required><br>
+
+    <button type="submit">Enviar Reclamo</button>
+  </form>
+
+  <div id="mensaje"></div>
+
+  <script src="reclamo.js"></script>
+</body>
+</html>
